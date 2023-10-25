@@ -10,7 +10,7 @@ app.get("/enter", async (req, res) => {
 });
 
 app.get("/logout", auth.require, async (req, res) => {
-    res.cookie("cookie", "", { secure: true, maxAge: 0 });
+    res.cookie("cookie", "", { domain: process.env.cors_origin, secure: true, maxAge: 0 });
     res.sendStatus(200);
 });
 
