@@ -10,7 +10,7 @@ app.get("/enter", async (req, res) => {
 });
 
 app.get("/logout", auth.require, async (req, res) => {
-    res.cookie("cookie", "", { httpOnly: true, maxAge: 0 });
+    res.cookie("cookie", "", { httpsOnly: true, maxAge: 0 });
     res.sendStatus(200);
 });
 
