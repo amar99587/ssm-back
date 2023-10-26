@@ -1,6 +1,6 @@
 const { Router } = require("express");
 // const user = require("./services");
-// const cookies = require("../utilities/cookies");
+const cookies = require("../utilities/cookies");
 const auth = require("../middlewares/auth");
 
 const app = Router();
@@ -10,7 +10,7 @@ app.get("/enter", async (req, res) => {
 });
 
 app.get("/logout", auth.require, async (req, res) => {
-    res.cookie("cookie", "", { httpOnly: true, maxAge: 0 });
+    res.cookie("cookie", "", ...cookies.options({ maxAge: 0 }) );
     res.sendStatus(200);
 });
 
