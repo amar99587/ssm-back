@@ -9,7 +9,7 @@ exports.options = ({ maxAge }) => {
 exports.create = (data, CustomMaxAge) => {
     const maxAge = CustomMaxAge || (30 * 24 * 60 * 60); //  default value : 30 days in seconds
     const token = sign(data, jwtSecret, { expiresIn: maxAge });
-    return { token, ...options({ maxAge }) };
+    return { token, ...exports.options({ maxAge }) };
 };
 
 exports.read = (token = false) => {
