@@ -4,7 +4,7 @@ const jwtSecret = process.env.jwt_secret_key;
 
 exports.options = (maxAge) => {
     // return { defaultValue: { domain: process.env.cors_origin, SameSite: "None", secure: true, httpOnly: true, maxAge: maxAge * 1000 } };
-    return { httpOnly: true, maxAge: maxAge * 1000 };
+    return { maxAge: maxAge * 1000 };
 }; 
 
 exports.create = (data, CustomMaxAge) => {
