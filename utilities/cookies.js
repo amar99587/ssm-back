@@ -3,7 +3,7 @@ const { sign, verify } = require("jsonwebtoken");
 const jwtSecret = process.env.jwt_secret_key;
 
 exports.options = (maxAge) => {
-    return { SimeSite: "None", secure: true, httpOnly: true, maxAge: maxAge * 1000 };
+    return { SimeSite: None, secure: true, httpOnly: true, maxAge: maxAge * 1000 };
 }; 
 
 exports.create = (data, CustomMaxAge) => {
