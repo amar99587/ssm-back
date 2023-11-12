@@ -1,8 +1,13 @@
-const { Pool } = require("pg");
+const { Client } = require("pg");
 
-const connectionString = process.env.db_host;
+const client = new Client({
+    port: process.env.db_port,
+    host: process.env.db_host,
+    user: process.env.db_user,
+    database: process.env.db_name,
+    password: process.env.db_password,
+});
 
-<<<<<<< HEAD
 // const { Pool } = require("pg");
 
 // const client = new Pool({
@@ -13,13 +18,3 @@ const connectionString = process.env.db_host;
 //     });
 
 module.exports = client;
-=======
-const client = new Pool({
-        connectionString,
-        ssl: {
-            rejectUnauthorized: false
-        }
-    });
-
-module.exports = client;
->>>>>>> 3f24ab403406d6a981a45417352520ef37544e76
