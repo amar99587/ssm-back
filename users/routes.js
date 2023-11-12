@@ -1,6 +1,6 @@
 const { Router } = require("express");
-const cookies = require("../utilities/cookies");
 const auth = require("../middlewares/auth");
+const cookies = require("../utilities/cookies");
 
 const app = Router();
 

@@ -1,20 +1,20 @@
-// const { getUserBy } = require("../database/users");
 const cookies = require("../utilities/cookies");
 
 const time = () => {
     const now = new Date();
-    const dd = String(now.getDate()).padStart(2, '0');
-    const mm = String(now.getMonth() + 1).padStart(2, '0'); // January is 0!
-    const hh = String(now.getHours()).padStart(2, '0');
-    const min = String(now.getMinutes()).padStart(2, '0');
-    const ss = String(now.getSeconds()).padStart(2, '0');
+    const convert = (data) => { return String(data).padStart(2, '0') };
+    const dd = convert(now.getDate());
+    const mm = convert(now.getMonth() + 1); // January is 0!
+    const hh = convert(now.getHours());
+    const min = convert(now.getMinutes());
+    const ss = convert(now.getSeconds());
   
     return `${dd}/${mm} ${hh}:${min}:${ss}`;
 }
 
 exports.verifyAuth = async (req, res, next) => {
     const user = await cookies.read(req.cookies.cookie);
-    req.user = user.uid && user;
+    req.user = user.code && user;
     console.log(`\n -----[ ${time()} ]-----[ ${req.url} ]-----[ ${req.user?.email} ]----- \n`);
     res.setHeader("Cache-Control", "no-store");
     next();

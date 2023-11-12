@@ -1,16 +1,15 @@
 const { genSalt, hash, compare } = require("bcrypt");
-const { getUserBy, createNewUser } = require("../database/users");
+const db_user = require("../database/users");
 
 exports.signup = async (data) => {
     try {
-        const user = await getUserBy.email(data.email);
-        if (user.exists) {
-            return user;
+        const result = await db_user.get("email", data.email);
+        if (result.exists) {
+            return result;
         } else {
             const salt = await genSalt();
             data.password = await hash(data.password, salt);
-            const result = await createNewUser(data);
-            console.log(result.rows[0]);
+            const result = await db_user.new(data);
             return result.rows[0];
         }
     } catch (error) {
@@ -20,13 +19,13 @@ exports.signup = async (data) => {
 
 exports.login = async ({email, password}) => {
     try {
-        const user = await getUserBy.email(email);
-        if (user.exists) {
-            const matched = await compare(password, user.data.password);
-            delete user.data.password;
-            return matched ? { ...user, matched } : { exists: user.exists, matched };
+        const result = await db_user.get("email", email);
+        if (result.exists) {
+            const matched = await compare(password, result.data.password);
+            delete result.data.password;
+            return matched ? { ...result, matched } : { exists: result.exists, matched };
         } else {
-            return user;
+            return result;
         };
     } catch (error) {
         return error;

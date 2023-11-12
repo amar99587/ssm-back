@@ -1,38 +1,24 @@
 const db = require("./main");
 
-exports.createNewUser = async ({email, password}) => {
+exports.new = async ({email, password}) => {
     try {
-        const result = await db.query("insert into users (email, password) values ( $1, $2 ) RETURNING uid, code, email, created_at", [ email, password ]);
+        const result = await db.query("insert into users (email, password) values ( $1, $2 ) RETURNING code, email, created_at", [ email, password ]);
         return result;
     } catch (error) {
         return error;
     };
 };
 
-exports.getUserBy = {
-    email: async (email) => {
-        try {
-            const result = await db.query(`select * from users where email = $1;`, [ email ]);
-            return {
-                exists: !!result.rowCount,
-                data: result.rows[0],
-            };
-        } catch (error) {
-            return error;
+exports.get = async (type, data) => {
+    try {
+        const result = await db.query(`select * from users where ${type} = $1;`, [ data ]);
+        return {
+            exists: !!result.rowCount,
+            data: result.rows[0],
         };
-    },
-    uid: async (uid) => {
-        try {
-            const result = await db.query(`select * from users where uid = $1`, [ uid ]);
-            return {
-                exists: !!result.rowCount,
-                data: result.rows[0],
-            };
-        } catch (error) {
-            console.log(error);
-            return error;
-        };
-    }
+    } catch (error) {
+        return error;
+    };
 };
 
 // exports.getUserSchool = async (userUid, schoolUid) => {

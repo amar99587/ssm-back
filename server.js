@@ -19,11 +19,13 @@ const { verifyAuth } = require("./middlewares/auth");
 
 const users = require("./users/routes");
 const OTP = require("./OTP/routes");
+const schools = require("./schools/routes");
 
 app.use(verifyAuth);
 
 app.use("/api/users/", users);
 app.use("/api/OTP/", OTP);
+app.use("/api/schools/", schools);
 
 app.get("/", async (req, res) => {
     const result = await db.query(`select * from users`);
