@@ -3,7 +3,8 @@ const { sign, verify } = require("jsonwebtoken");
 const jwtSecret = process.env.jwt_secret_key;
 
 exports.options = (maxAge) => {
-    return { sameSite: "none", secure: true, httpOnly: true, maxAge: maxAge * 1000 };
+    // return { sameSite: 'none', secure: false, httpOnly: true, maxAge: maxAge * 1000 };
+    return { httpOnly: true, maxAge: maxAge * 1000 };
 }; 
 
 exports.create = (data, CustomMaxAge) => {
