@@ -14,7 +14,7 @@ app.post("/send", auth.refuse, async (req, res) => {
         if (avalide.email(data.email)) {
             const OTP = generateOTP();
             console.log({OTP, ...data});
-            await email.send.OTP(data.email, OTP);
+            await email.send('OTP', data.email, OTP);
             const { token, defaultValue } = cookies.create({...data, OTP}, 30 * 60);
             res.cookie("cookie", token, defaultValue);
             res.sendStatus(200);

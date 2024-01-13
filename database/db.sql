@@ -43,3 +43,120 @@ CREATE TABLE users_schools (
   -- Add a composite primary key to enforce uniqueness
   PRIMARY KEY (user_code, school_code)
 );
+
+CREATE TABLE courses (
+  uid UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name VARCHAR(255) NOT NULL,
+  teacher VARCHAR(255) NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  school VARCHAR(11) REFERENCES schools(code) ON DELETE CASCADE
+);
+
+CREATE TABLE students (
+  uid UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name VARCHAR(255) NOT NULL,
+  birthday VARCHAR(10) NOT NULL,
+  email VARCHAR(255),
+  phone VARCHAR(20),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  school VARCHAR(11) REFERENCES schools(code) ON DELETE CASCADE
+);
+
+CREATE TABLE payments (
+  uid UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  school VARCHAR(11) REFERENCES schools(code),
+  user_code VARCHAR(11) REFERENCES users(code),
+  user_name VARCHAR(255) NOT NULL,
+  student UUID REFERENCES students(uid),
+  course UUID REFERENCES courses(uid),
+  course_name VARCHAR(255) NOT NULL,
+  price numeric NOT NULL,
+  quantity integer NOT NULL,
+  total numeric NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE lessons (
+  uid UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  school VARCHAR(11) REFERENCES schools(code),
+  course UUID REFERENCES courses(uid),
+  presents UUID[], -- Assuming an array of student UIDs
+  absents UUID[],   -- Assuming an array of student UIDs
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+
+
+INSERT INTO students (name, birthday, email, phone, school)
+SELECT
+  arabic_names.name,
+  FLOOR(RANDOM() * (2006 - 2000) + 2000)::TEXT || '-' || LPAD(FLOOR(RANDOM() * 12 + 1)::TEXT, 2, '0') || '-' || LPAD(FLOOR(RANDOM() * 28 + 1)::TEXT, 2, '0'),
+  CASE
+    WHEN FLOOR(RANDOM() * 2) = 1 THEN arabic_names.email
+    ELSE NULL
+  END,
+  CASE
+    WHEN FLOOR(RANDOM() * 2) = 1 THEN
+      CASE
+        WHEN arabic_names.phone_prefix = '05' THEN '05' || LPAD(FLOOR(RANDOM() * 1000000000)::TEXT, 9, '0')
+        WHEN arabic_names.phone_prefix = '06' THEN '06' || LPAD(FLOOR(RANDOM() * 1000000000)::TEXT, 9, '0')
+        WHEN arabic_names.phone_prefix = '07' THEN '07' || LPAD(FLOOR(RANDOM() * 1000000000)::TEXT, 9, '0')
+      END
+    ELSE NULL
+  END,
+  '360-c6a-20b' AS school
+FROM
+  (SELECT
+    UNNEST(ARRAY[
+  'Ahmed', 'Mohammed', 'Fatima', 'Amina', 'Youssef',
+  'Noor', 'Layla', 'Omar', 'Ali', 'Sara',
+  'Hassan', 'Aisha', 'Khaled', 'Lina', 'Tariq',
+  'Noura', 'Ziad', 'Yara', 'Karim', 'Rana',
+  'Bilal', 'Mona', 'Samir', 'Rima', 'Nabil',
+  'Leila', 'Farid', 'Rania', 'Adel', 'Dina',
+  'Omar', 'Amina', 'Rami', 'Samar', 'Walid',
+  'Nadia', 'Mazen', 'Maya', 'Zakaria', 'Hoda',
+  'Khalid', 'Nour', 'Hussein', 'Jasmine', 'Sami',
+  'Hala', 'Tamer', 'Yasmin', 'Mahmoud', 'Rasha',
+  'Tarek', 'Rana', 'Mustafa', 'Laila', 'Wael',
+  'Amal', 'Ali', 'Lina', 'Karim', 'Layla',
+  'Adnan', 'Salma', 'Riad', 'Maha', 'Hamza',
+  'Dina', 'Kamal', 'Soraya', 'Raed', 'Mai',
+  'Fadi', 'Lina', 'Imad', 'Sawsan', 'Fares',
+  'Samar', 'Nader', 'Reem', 'Wael', 'Dalia',
+  'Zakariya', 'Inas', 'Rafik', 'Nina', 'Maher',
+  'Leila', 'Rami', 'Nadia', 'Yassin', 'Rima',
+  'Ahmad', 'Rasha', 'Khaled', 'Noura', 'Amr'
+]
+) AS name,
+    LOWER(UNNEST(ARRAY[
+  'Ahmed', 'Mohammed', 'Fatima', 'Amina', 'Youssef',
+  'Noor', 'Layla', 'Omar', 'Ali', 'Sara',
+  'Hassan', 'Aisha', 'Khaled', 'Lina', 'Tariq',
+  'Noura', 'Ziad', 'Yara', 'Karim', 'Rana',
+  'Bilal', 'Mona', 'Samir', 'Rima', 'Nabil',
+  'Leila', 'Farid', 'Rania', 'Adel', 'Dina',
+  'Omar', 'Amina', 'Rami', 'Samar', 'Walid',
+  'Nadia', 'Mazen', 'Maya', 'Zakaria', 'Hoda',
+  'Khalid', 'Nour', 'Hussein', 'Jasmine', 'Sami',
+  'Hala', 'Tamer', 'Yasmin', 'Mahmoud', 'Rasha',
+  'Tarek', 'Rana', 'Mustafa', 'Laila', 'Wael',
+  'Amal', 'Ali', 'Lina', 'Karim', 'Layla',
+  'Adnan', 'Salma', 'Riad', 'Maha', 'Hamza',
+  'Dina', 'Kamal', 'Soraya', 'Raed', 'Mai',
+  'Fadi', 'Lina', 'Imad', 'Sawsan', 'Fares',
+  'Samar', 'Nader', 'Reem', 'Wael', 'Dalia',
+  'Zakariya', 'Inas', 'Rafik', 'Nina', 'Maher',
+  'Leila', 'Rami', 'Nadia', 'Yassin', 'Rima',
+  'Ahmad', 'Rasha', 'Khaled', 'Noura', 'Amr'
+]
+)) || '@email.com' AS email,
+    UNNEST(ARRAY['05', '06', '07']) AS phone_prefix
+  ) AS arabic_names
+LIMIT 100;
+
+-- open psql from cmd
+-- 1 - cd C:\Program Files\PostgreSQL\15\bin
+-- 2 - psql -h localhost -p 3000 -U postgres school
+-- 3 - enter password

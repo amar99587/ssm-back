@@ -1,8 +1,8 @@
 const db = require("./main");
 
-exports.create = async (name) => {
+exports.create = async ({name, email}) => {
     try {
-        const result = await db.query("insert into schools (name) values ( $1 ) RETURNING code;", [ name ]);
+        const result = await db.query("INSERT INTO schools (name, email) VALUES ( $1, $2 ) RETURNING code;", [ name, email ]);
         return result.rows[0];
     } catch (error) {
         return error;
@@ -12,7 +12,7 @@ exports.create = async (name) => {
 exports.link = {
     new: async (user, school, role, status) => {
         try {
-            const result = await db.query("insert into users_schools (user_code, school_code, role, status) values ( $1, $2, $3, $4 ) RETURNING *;", [ user, school, role || "owner", status || "active" ]);
+            const result = await db.query("INSERT INTO users_schools (user_code, school_code, role, status) VALUES ( $1, $2, $3, $4 ) RETURNING *;", [ user, school, role || "owner", status || "active" ]);
             return result.rows[0];
         } catch (error) {
             return error;
@@ -35,13 +35,23 @@ exports.get = {
     one: async (user, school) => {
         try {
             const result = await db.query(`
-                SELECT json_build_object('school', schools.*, 'link', users_schools.*) FROM users
-                INNER JOIN users_schools ON users.code = users_schools.user_code
-                INNER JOIN schools ON users_schools.school_code = schools.code 
-                where user_code = $1 and school_code = $2;
+                SELECT s.*, json_build_object('role', us.role, 'status', us.status, 'created_at', us.created_at AT TIME ZONE 'UTC') AS link 
+                FROM users_schools us
+                LEFT JOIN schools s ON us.school_code = s.code
+                WHERE us.user_code = $1 AND school_code = $2;
             `, [ user, school ]);
-            const data = result.rows[0].json_build_object;
-            return {...data.school, link: data.link};
+            return result.rows[0];
+        } catch (error) {
+            return error;
+        };
+    },
+    exact: async (code) => {
+        try {
+            const result = await db.query('SELECT created_at FROM schools WHERE code = $1;', [ code ]);
+            const r2 = await db.query("SELECT json_build_object('created_at', created_at) FROM schools WHERE code = $1;", [ code ]);
+            const data = result.rows[0];
+            console.log(data.created_at, r2.rows[0].json_build_object.created_at);
+            return { r1: data.created_at, r2: r2.rows[0].json_build_object.created_at };
         } catch (error) {
             return error;
         };
@@ -49,14 +59,13 @@ exports.get = {
     user: async (code) => {
         try {
             const result = await db.query(`
-                SELECT json_build_object('school', schools.*, 'link', users_schools.*) FROM users
-                INNER JOIN users_schools ON users.code = users_schools.user_code
-                INNER JOIN schools ON users_schools.school_code = schools.code 
-                where user_code = $1;
+                SELECT s.*, json_build_object('role', us.role, 'status', us.status, 'created_at', us.created_at AT TIME ZONE 'UTC') AS link 
+                FROM users_schools us
+                LEFT JOIN schools s ON us.school_code = s.code
+                WHERE us.user_code = $1 
+                ORDER BY s.created_at DESC;
             `, [ code ]);
-            const data = [];
-            result.rows.forEach((i) => {data.push({...i.json_build_object.school, link: i.json_build_object.link});});
-            return data;
+            return result.rows;
         } catch (error) {
             return error;
         };
