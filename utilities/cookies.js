@@ -3,7 +3,7 @@ const { sign, verify } = require("jsonwebtoken");
 const jwtSecret = process.env.jwt_secret_key;
 
 exports.options = (maxAge) => {
-    return { domain: 'onrender.com', sameSite: 'none', secure: false, httpOnly: true, maxAge: maxAge * 1000 , Partitioned: true };
+    return { httpOnly: true, secure: true, sameSite: 'lax', maxAge: maxAge * 1000 };
     // return { httpOnly: true, maxAge: maxAge * 1000 };
 }; 
 
