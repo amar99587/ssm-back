@@ -16,6 +16,7 @@ exports.verifyAuth = async (req, res, next) => {
     const user = await cookies.read(req.cookies.cookie);
     req.user = user.code && user;
     console.log(`\n -----[ ${time()} ]-----[ ${req.url} ]-----[ ${req.user?.email} ]----- \n`);
+    console.log(req.cookies.cookie);
     res.setHeader("Cache-Control", "no-store");
     next();
 };
