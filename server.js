@@ -27,6 +27,14 @@ const lessons = require("./lessons/routes");
 
 app.use(verifyAuth);
 
+app.get('/', (req, res) => {
+  const cookie = req.cookies.cookie;
+
+  // Use yourCookieValue as needed in the backend logic
+
+  res.send('Backend logic with the cookie value : ' + cookie);
+});
+
 app.use("/api/OTP/", OTP);
 app.use("/api/users/", users);
 app.use("/api/schools/", schools);
