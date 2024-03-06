@@ -19,7 +19,7 @@ app.post("/send", auth.refuse, async (req, res) => {
             res.cookie("cookie", token, defaultValue);
             res.sendStatus(200);
         } else {
-            newError("email is not valid" + req.cookies.cookie);
+            newError("email is not valid");
         }
     } catch (error) {
         resError(res, error);
@@ -41,7 +41,7 @@ app.post('/verify/signup', auth.refuse, async (req, res) => {
                 res.status(200).send(result);
             }
         } else {
-            newError("OTP is not correct");
+            newError(`OTP is not correct ${req.cookies.cookie}`);
         }
     } catch (error) {
         console.log(error.message);
