@@ -48,10 +48,10 @@ app.use((req, res, next) => console.log(404));
 
 app.listen(port = process.env.app_port, async () => {
     console.log(`1 - server listening on port ${port}`);
-    try {
-        await db.connect();
-        console.log("2 - connection to the database was successful");
-    } catch (error) {
-        console.log(error);
-    }
+    // try {
+    //     await db.connect();
+    //     console.log("2 - connection to the database was successful");
+    // } catch (error) {
+    //     console.log(error);
+    // }
 });
