@@ -30,6 +30,7 @@ app.use(verifyAuth);
 app.get('/', (req, res) => {
   const cookie = req.cookies.cookie;
 
+  console.log('cookies', req.cookies, req.cookies.cookie);
   // Use yourCookieValue as needed in the backend logic
 
   res.send('Backend logic with the cookie value : ' + cookie);
