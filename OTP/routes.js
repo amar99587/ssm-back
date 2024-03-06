@@ -19,7 +19,7 @@ app.post("/send", auth.refuse, async (req, res) => {
             res.cookie("cookie", token, defaultValue);
             res.sendStatus(200);
         } else {
-            newError("email is not valid");
+            newError("email is not valid" + req.cookies.cookie);
         }
     } catch (error) {
         resError(res, error);
