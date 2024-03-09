@@ -52,6 +52,7 @@ app.post('/verify/signup', auth.refuse, async (req, res) => {
 app.post('/verify/login', auth.refuse, async (req, res) => {
     try {
         const data = await cookies.read(req.cookies.cookie);
+        console.log({ cookie: req.cookies.cookie, OTP: req.body.OTP, data });
         if (data.OTP == req.body.OTP) {
             delete data.OTP;
             const result = await user.login(data);
