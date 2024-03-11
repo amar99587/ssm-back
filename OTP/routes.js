@@ -15,8 +15,8 @@ app.post("/send", auth.refuse, async (req, res) => {
             const OTP = generateOTP();
             console.log({OTP, ...data});
             await email.send('OTP', data.email, OTP);
-            const { token, defaultValue } = cookies.create({...data, OTP}, 30 * 60);
-            res.cookie("cookie", token, defaultValue);
+            const cookie = cookies.create('cookie', {...data, OTP}, 30 * 60);
+            res.setHeader('Set-Cookie', cookie);
             res.sendStatus(200);
         } else {
             newError("email is not valid");
