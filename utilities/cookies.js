@@ -2,15 +2,12 @@ const { sign, verify } = require("jsonwebtoken");
 
 const jwtSecret = process.env.jwt_secret_key;
 
-exports.options = (maxAge) => {
-    return { domain: 'onrender.com', sameSite: 'none', secure: false, httpOnly: true, maxAge: maxAge * 1000 , Partitioned: true };
-    // return { httpOnly: true, maxAge: maxAge * 1000 };
-}; 
+exports.options = (maxAge) => `Max-Age=${ maxAge * 1000 }; Path=/; HttpOnly; SameSite=None; Secure; Partitioned;`
 
-exports.create = (data, CustomMaxAge) => {
+exports.create = (cookieName, data, CustomMaxAge) => {
     const maxAge = CustomMaxAge || (30 * 24 * 60 * 60); //  default value : 30 days in seconds
     const token = sign(data, jwtSecret, { expiresIn: maxAge });
-    return { token, defaultValue: exports.options(maxAge) };
+    return `${cookieName}=${token}; ${exports.options(maxAge)}`;
 };
 
 exports.read = (token = false) => {
