@@ -27,6 +27,15 @@ const lessons = require("./lessons/routes");
 
 app.use(verifyAuth);
 
+app.get('/', (req, res) => {
+  const cookie = req.cookies.cookie;
+
+  console.log('cookies', req.cookies, req.cookies.cookie);
+  // Use yourCookieValue as needed in the backend logic
+
+  res.send('Backend logic with the cookie value : ' + cookie);
+});
+
 app.use("/api/OTP/", OTP);
 app.use("/api/users/", users);
 app.use("/api/schools/", schools);
@@ -39,10 +48,10 @@ app.use((req, res, next) => console.log(404));
 
 app.listen(port = process.env.app_port, async () => {
     console.log(`1 - server listening on port ${port}`);
-    try {
-        await db.connect();
-        console.log("2 - connection to the database was successful");
-    } catch (error) {
-        console.log(error);
-    }
+    // try {
+    //     await db.connect();
+    //     console.log("2 - connection to the database was successful");
+    // } catch (error) {
+    //     console.log(error);
+    // }
 });
