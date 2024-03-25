@@ -11,7 +11,6 @@ app.post("/create", auth.require, async (req, res) => {
 
 app.post("/search", auth.require, async (req, res) => {
     const result = await lesson.search(req);
-    console.log(result);
     res.status(200).send(result);
 });
 
@@ -22,7 +21,6 @@ app.get("/get/:lesson", auth.require, async (req, res) => {
 
 app.get("/get/student/:uid", auth.require, async (req, res) => {
     const result = await lesson.get.student(req.params.uid);
-    console.log(result);
     res.status(200).send(result);
 });
 

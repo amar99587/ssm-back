@@ -16,7 +16,6 @@ app.get("/user", auth.require, async (req, res) => {
 
 app.get("/get/:code", auth.require, async (req, res) => {
     const result = await school.get.one(req.user.code, req.params.code);
-    console.log(result);
     res.status(200).send(result);
 });
 

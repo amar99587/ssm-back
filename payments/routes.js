@@ -7,7 +7,7 @@ const app = Router();
 
 app.post("/create", auth.require, async (req, res) => {
     const result = await payment.create(req);
-    await email.send('payment', req.user.email, result);
+    //await email.send('payment', req.user.email, result);
     res.status(200).send(result);
 });
 

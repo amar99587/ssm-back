@@ -22,7 +22,6 @@ const options = (email) => { return {
 }};
 
 const template = (type, email, value) => {
-  console.log(value);
   if (type == 'OTP') {
     return {
       to: email,

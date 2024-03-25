@@ -27,7 +27,6 @@ app.post("/search", auth.require, async (req, res) => {
 app.get("/get/:student", auth.require, async (req, res) => {
     // const enter = new Date();
     const result = await student.get.one(req.params.student);
-    console.log(result.created_at);
     res.status(200).send(result);
     // console.log("student", Date.now() - enter);
 });

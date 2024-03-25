@@ -37,7 +37,6 @@ exports.get = {
         };
     },
     school: async ({ school, from, to, user, course }) => {
-        console.log({ school, from, to, user, course });
         try {
             const result = await db.query(`
                 SELECT * FROM payments 
@@ -49,7 +48,6 @@ exports.get = {
                 AND course_name ILIKE $5
                 ORDER BY created_at DESC;
             `, [ school, from + ":00", to + ":59", `%${user}%`, `%${course}%` ]);
-            console.log(result.rows);
             return result.rows;
         } catch (error) {
             return error;

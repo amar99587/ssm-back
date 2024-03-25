@@ -13,12 +13,18 @@ const time = () => {
 }
 
 exports.verifyAuth = async (req, res, next) => {
-    const user = await cookies.read(req.cookies.cookie);
-    req.user = user.code && user;
-    console.log(`\n -----[ ${time()} ]-----[ ${req.url} ]-----[ ${req.user?.email} ]----- \n`);
-    console.log(req.cookies.cookie);
-    res.setHeader("Cache-Control", "no-store");
-    next();
+    try {
+        const user = await cookies.read(req.cookies.cookie);
+        user.time = Date.now();
+        req.user = user.code && user;
+        if (process.env.in_dev) {
+            console.log(`\n -----[ ${time()} ]-----[ ${req.url} ]-----[ ${req.user?.email} ]----- \n`);
+        }
+    } catch (error) {
+        console.log(error.name, ' => ', error.message);
+    }
+        res.setHeader("Cache-Control", "no-store");
+        next();
 };
 
 exports.require = (req, res, next) => req.user && next();

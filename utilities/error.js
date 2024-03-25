@@ -1,5 +1,5 @@
 exports.newError = (error) => { 
-    console.log(error ? 1 : 0);
+    console.log("Error title : ", error.title, "\nError message : ", error.message);
     throw new Error(
         JSON.stringify({
             code: error.code || 500, 
@@ -10,7 +10,7 @@ exports.newError = (error) => {
 };
 
 exports.resError = (res, error) => {
-    console.log("message : ", error.message);
+    console.log("Error title : ", error.title, "\nError message : ", error.message);
     error = typeof error.message == "string" ? error.message : JSON.parse(error.message);
     return res.status(error.code || 500).send(error);
 };

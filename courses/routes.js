@@ -14,20 +14,6 @@ app.post("/update", auth.require, async (req, res) => {
     res.status(200).send(result);
 });
 
-// app.post("/search", auth.require, async (req, res) => {
-//     const enter = new Date();
-//     const result = await course.search(req);
-//     res.status(200).send(result);
-//     console.log("old-course", Date.now() - enter);
-// });
-
-// app.post("/isPaid", auth.require, async (req, res) => {
-//     const enter = new Date();
-//     const result = await course.isPaid(req);
-//     res.status(200).send(result);
-//     console.log("old-course", Date.now() - enter);
-// });
-
 app.get("/get/:course", auth.require, async (req, res) => {
     const result = await course.get.one(req.params.course);
     res.status(200).send(result);
