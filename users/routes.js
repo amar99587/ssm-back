@@ -11,11 +11,16 @@ app.get("/login/:provider/:token", async (req, res) => {
         let response;
         switch (req.params.provider) {
             case 'google':
-                response = await axios.get('https://www.googleapis.com/oauth2/v1/userinfo', {
-                    headers: {
-                        Authorization: `Bearer ${req.params.token}`
-                    }
-                });
+                try {
+                    response = await axios.get("https://www.googleapis.com/oauth2/v1/userinfo", {
+                        headers: {
+                            Authorization: `Bearer ${req.params.token}`,
+                        },
+                    });
+                } catch (error) {
+                    console.log("error.title : ", error.title);
+                    console.log("error.message : ", error.message);
+                }
                 break;
         }
         if (response.status == 200) {
