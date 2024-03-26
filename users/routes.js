@@ -7,7 +7,6 @@ const axios = require('axios');
 const app = Router();
 
 app.get("/login/:provider/:token", async (req, res) => {
-    console.log('provider : ', req.params.provider, ', token : ', req.params.token);
     try {
         let response;
         switch (req.params.provider) {
@@ -27,7 +26,8 @@ app.get("/login/:provider/:token", async (req, res) => {
             res.status(200).send(result);
         } else {
             console.log('response :', response);
-            throw new Error(response);
+            //throw new Error(response);
+            res.status(500);
         }
     } catch (error) {
         console.log(error.name, error.message);
