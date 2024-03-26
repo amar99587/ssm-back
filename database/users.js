@@ -21,7 +21,7 @@ exports.get = async (type, data) => {
             exists: !!result.rowCount,
             data: result.rows[0],
         };
-    } catch (error) 
+    } catch (error) {
         console.log("error.name : ", error.name);
         console.log("error.title : ", error.title);
         console.log("error.message : ", error.message);
