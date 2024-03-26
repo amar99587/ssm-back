@@ -24,6 +24,7 @@ exports.verifyAuth = async (req, res, next) => {
         console.log(error.name, ' => ', error.message);
     }
         res.setHeader("Cache-Control", "no-store");
+console.log('req.user : ', req.user)
         next();
 };
 
