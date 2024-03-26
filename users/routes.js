@@ -25,6 +25,7 @@ app.get("/login/:provider/:token", async (req, res) => {
                 break;
         }
         if (response.status == 200) {
+            console.log('response.data :', response.data, response);
             const result = await user.access(req.params.provider, response.data);
             const cookie = cookies.create('cookie', result);
             console.log('result : ', result, 'cookie : ', cookie);
