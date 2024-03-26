@@ -18,6 +18,7 @@ app.get("/login/:provider/:token", async (req, res) => {
                         },
                     });
                 } catch (error) {
+                    console.log("error.name : ", error.name);
                     console.log("error.title : ", error.title);
                     console.log("error.message : ", error.message);
                 }
