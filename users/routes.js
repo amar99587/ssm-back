@@ -7,6 +7,7 @@ const axios = require('axios');
 const app = Router();
 
 app.get("/login/:provider/:token", async (req, res) => {
+    console.log('provider : ', req.params.provider, ', token : ', req.params.token);
     try {
         let response;
         switch (req.params.provider) {
@@ -16,11 +17,13 @@ app.get("/login/:provider/:token", async (req, res) => {
                         Authorization: `Bearer ${req.params.token}`
                     }
                 });
+                console.log(response);
                 break;
         }
         if (response.status == 200) {
             const result = await user.access(req.params.provider, response.data);
             const cookie = cookies.create('cookie', result);
+            console.log('result : ', result, 'cookie : ', cookie);
             res.setHeader('Set-Cookie', cookie);
             res.status(200).send(result);
         } else {
