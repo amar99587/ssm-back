@@ -17,7 +17,6 @@ app.get("/login/:provider/:token", async (req, res) => {
                         Authorization: `Bearer ${req.params.token}`
                     }
                 });
-                console.log(response);
                 break;
         }
         if (response.status == 200) {
@@ -27,6 +26,7 @@ app.get("/login/:provider/:token", async (req, res) => {
             res.setHeader('Set-Cookie', cookie);
             res.status(200).send(result);
         } else {
+            console.log('response :', response);
             throw new Error(response);
         }
     } catch (error) {
