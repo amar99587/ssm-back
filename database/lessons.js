@@ -1,5 +1,6 @@
 const db = require("./main");
 const { search } = require("../utilities/db");
+const { handleDbError } = require("../utilities/validator");
 
 exports.create = async ({ school, course }) => {
     try {
@@ -42,7 +43,7 @@ exports.create = async ({ school, course }) => {
         `, [ school, course, [] ]);
         return result.rows[0];
     } catch (error) {
-        return error;
+        return handleDbError(error);
     };
 };
 
@@ -51,7 +52,7 @@ exports.search = async (lesson, {offset, limit}) => {
         const result = await search({table: "lessons", where: lesson, exact: ["course"], toDate: ["created_at"], offset: offset, limit: limit}, db);
         return result.rows;
     } catch (error) {
-        return error;
+        return handleDbError(error);
     };
 };
 
@@ -61,7 +62,7 @@ exports.get = {
             const result = await db.query("SELECT * FROM lessons WHERE uid = $1;", [ lesson ]);
             return result.rows[0];
         } catch (error) {
-            return error;
+            return handleDbError(error);
         };
     },
     student: async (uid) => {
@@ -69,7 +70,7 @@ exports.get = {
             const result = await db.query("SELECT * FROM lessons WHERE $1 = ANY(presents) OR $1 = ANY(absents) ORDER BY created_at DESC;", [ uid ]);
             return result.rows;
         } catch (error) {
-            return error;
+            return handleDbError(error);
         };
     },
     students: async ({course, students, date}) => {
@@ -102,7 +103,7 @@ exports.get = {
             return result.rows;
         } catch (error) {
             console.log(error);
-            return error;
+            return handleDbError(error);
         };
     }
 };
@@ -133,6 +134,6 @@ exports.changeStudentStatus = async (lesson, student, toPresent) => {
         // console.log("Absents : " + result.rows[0].absents.length);
         return result.rows[0];
     } catch (error) {
-        return error;
+        return handleDbError(error);
     };
 };

@@ -1,4 +1,5 @@
 const db = require("./main");
+const { handleDbError } = require("../utilities/validator");
 
 exports.create = async (timetable) => {
   try {
@@ -8,7 +9,7 @@ exports.create = async (timetable) => {
     const result = await db.query(`INSERT INTO timetables (school_code, course_uid, start_at, end_at, day, date) VALUES ( $1, $2, $3, $4, $5, $6 ) RETURNING *;`, data);
     return result.rows[0];
   } catch (error) {
-    return error;
+    return handleDbError(error);
   };
 };
 
@@ -17,7 +18,7 @@ exports.delete = async (uid) => {
     const result = await db.query("DELETE from timetables WHERE uid = $1;", [ uid ]);
     return result.rows;
   } catch (error) {
-    return error;
+    return handleDbError(error);
   };
 };
 
@@ -29,6 +30,6 @@ exports.get = async (school) => {
       INNER JOIN courses c ON t.course_uid = c.uid WHERE school_code = $1;`, [ school ]);
       return result.rows;
     } catch (error) {
-      return error;
+      return handleDbError(error);
     };
   };

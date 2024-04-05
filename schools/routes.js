@@ -10,17 +10,17 @@ app.post("/create", auth.require, async (req, res) => {
 });
 
 app.get("/user", auth.require, async (req, res) => {
-    const result = await school.get.user(req.user.code);
+    const result = await school.get.user_schools(req.user.code);
     res.status(200).send(result);
 });
 
-app.get("/get/:code", auth.require, async (req, res) => {
-    const result = await school.get.one(req.user.code, req.params.code);
+app.get("/get/:school", auth.require, async (req, res) => {
+    const result = await school.get.one(req.user.code, req.params.school);
     res.status(200).send(result);
 });
 
-app.get("/get/exact/:code", async (req, res) => {
-    const result = await school.get.exact(req.params.code);
+app.get("/get/all/users/:school", auth.require, async (req, res) => {
+    const result = await school.get.school_users(req.params.school);
     res.status(200).send(result);
 });
 

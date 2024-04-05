@@ -19,25 +19,18 @@ app.use(cors({
 const db = require("./database/main");
 const { verifyAuth } = require("./middlewares/auth");
 
-const users = require("./users/routes");
-const schools = require("./schools/routes");
-const courses = require("./courses/routes");
-const students = require("./students/routes");
-const payments = require("./payments/routes");
-const lessons = require("./lessons/routes");
-const timetables = require("./timetables/routes");
-
 app.use(verifyAuth);
 
-app.use("/api/users/", users);
-app.use("/api/schools/", schools);
-app.use("/api/courses", courses);
-app.use("/api/students", students);
-app.use("/api/payments", payments);
-app.use("/api/lessons", lessons);
-app.use("/api/timetables", timetables);
+app.use("/api/users/", require("./users/routes"));
+app.use("/api/schools/", require("./schools/routes"));
+app.use("/api/link/", require("./link/routes"));
+app.use("/api/courses", require("./courses/routes"));
+app.use("/api/students", require("./students/routes"));
+app.use("/api/payments", require("./payments/routes"));
+app.use("/api/lessons", require("./lessons/routes"));
+app.use("/api/timetables", require("./timetables/routes"));
 
-app.use((req, res, next) => console.log(404));
+app.use(() => console.log(404));
 
 app.listen(port = process.env.app_port, async () => {
     console.log(`1 - server listening on port ${port}`);

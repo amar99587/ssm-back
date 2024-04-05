@@ -1,11 +1,12 @@
 const db = require("./main");
+const { handleDbError } = require("../utilities/validator");
 
 exports.create = async ({email, provider, providerData}) => {
     try {
         const result = await db.query("INSERT INTO users (email, provider, providerData) VALUES ( $1, $2, $3 ) RETURNING *;", [ email, provider, providerData ]);
         return result.rows[0];
     } catch (error) {
-        return error;
+        return handleDbError(error);
     };
 };
 
@@ -17,6 +18,6 @@ exports.get = async (type, data) => {
             data: result.rows[0],
         };
     } catch (error) {
-        return error;
+        return handleDbError(error);
     };
 };

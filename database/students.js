@@ -1,12 +1,13 @@
 const db = require("./main");
 const { search } = require("../utilities/db");
+const { handleDbError } = require("../utilities/validator");
 
 exports.create = async (student) => {
     try {
         const result = await db.query("INSERT INTO students (school, name, birthday, email, phone) VALUES ( $1, $2, $3, $4, $5 ) RETURNING *;", [student.school, student.name, student.birthday, student.email, student.phone]);
         return result.rows[0];
     } catch (error) {
-        return error;
+        return handleDbError(error);
     };
 };
 
@@ -15,7 +16,7 @@ exports.update = async (student) => {
         const result = await db.query("UPDATE students SET name = $1, birthday = $2, email = $3, phone = $4 WHERE uid = $5 RETURNING *;", [student.name, student.birthday, student.email, student.phone, student.uid]);
         return result.rows[0];
     } catch (error) {
-        return error;
+        return handleDbError(error);
     };
 };
 
@@ -25,7 +26,7 @@ exports.search = async (student, {offset, limit}) => {
         // console.log(result.rows.length);
         return result.rows;
     } catch (error) {
-        return error;
+        return handleDbError(error);
     };
 };
 
@@ -40,7 +41,7 @@ exports.get = {
     //         const result = await db.query(query.santex, query.values);
     //         return result.rows;
     //     } catch (error) {
-    //         return error;
+    //         return handleDbError(error);
     //     };
     // },
     one: async (student) => {
@@ -48,7 +49,7 @@ exports.get = {
             const result = await db.query("SELECT * FROM students WHERE uid = $1;", [student]);
             return result.rows[0];
         } catch (error) {
-            return error;
+            return handleDbError(error);
         };
     }
 };

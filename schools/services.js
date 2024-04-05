@@ -1,9 +1,16 @@
 const db = require("../database/schools");
+const dbLink = require("../database/link");
 
 exports.create = async (req) => {
     try {
         const school = await db.create(req.body);
-        const link = await db.link.new(req.user.code, school.code);
+        const link = await dbLink.new({
+            user: req.user.code,
+            school: school.code,
+            rules: require("../utilities/school-rules.json"),
+            type: "owner", 
+            status: "active"
+        });
         return link;
     } catch (error) {
         return error;
@@ -11,25 +18,24 @@ exports.create = async (req) => {
 };
 
 exports.get = {
-    one: async (user_code, school_code) => {
+    one: async (user, school) => {
         try {
-            const result = await db.get.one(user_code, school_code);
+            const result = await db.get.one(user, school);
             return result;
         } catch (error) {
             return error;
         }
     },
-    exact: async (code) => {
+    user_schools: async (code) => {
         try {
-            const result = await db.get.exact(code);
-            return result;
+            return await db.get.user_schools(code);
         } catch (error) {
             return error;
         }
     },
-    user: async (code) => {
+    school_users: async (code) => {
         try {
-            return await db.get.user(code);
+            return await db.get.school_users(code);
         } catch (error) {
             return error;
         }
