@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-const options = (email) => { return {
+const options = email => { return {
   from: process.env.email_user,
   to: email.to,
   subject: email.title,
@@ -69,4 +69,10 @@ const result = (email) => new Promise((resolve, reject) => {
   transporter.sendMail(options(email), (error, info) => error ? reject(error) : resolve(info.response));
 });
 
-exports.send = async (type, email, value) => await result(template(type, email, value));
+exports.send = async (type, email, value) => {
+  try {
+    return await result(template(type, email, value));
+  } catch (error) {
+    console.log(error);
+  }
+};

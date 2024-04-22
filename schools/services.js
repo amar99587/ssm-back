@@ -20,8 +20,7 @@ exports.create = async (req) => {
 exports.get = {
     one: async (user, school) => {
         try {
-            const result = await db.get.one(user, school);
-            return result;
+            return await db.get.one(user, school);
         } catch (error) {
             return error;
         }

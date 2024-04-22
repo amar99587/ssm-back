@@ -2,8 +2,7 @@ const db = require("../database/courses");
 
 exports.create = async (req) => {
     try {
-        const result = await db.create(req.body);
-        return result;
+        return await db.create(req.body);
     } catch (error) {
         return error;
     }
@@ -11,8 +10,7 @@ exports.create = async (req) => {
 
 exports.update = async (req) => {
     try {
-        const result = await db.update(req.body);
-        return result;
+        return await db.update(req.body);
     } catch (error) {
         return error;
     }
@@ -20,8 +18,7 @@ exports.update = async (req) => {
 
 exports.search = async (req) => {
     try {
-        const result = await db.search(req.body, req.query);
-        return result;
+        return await db.search(req.body, req.query);
     } catch (error) {
         return error;
     }
@@ -29,8 +26,7 @@ exports.search = async (req) => {
 
 exports.isPaid = async (req) => {
     try {
-        const result = await db.isPaid(req.body, req.query);
-        return result;
+        return await db.isPaid(req.body, req.query);
     } catch (error) {
         return error;
     }
@@ -39,8 +35,7 @@ exports.isPaid = async (req) => {
 exports.get = {
     one: async (course) => {
         try {
-            const result = await db.get.one(course);
-            return result;
+            return await db.get.one(course);
         } catch (error) {
             return error;
         }

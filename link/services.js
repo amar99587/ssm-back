@@ -44,8 +44,7 @@ exports.new = async (req) => {
 
 exports.get = async (req) => {
     try {
-        const result = await db.get(req.params);
-        return result;
+        return await db.get(req.params);
     } catch (error) {
         return error;
     }
@@ -53,8 +52,7 @@ exports.get = async (req) => {
 
 exports.update = async (req) => {
     try {
-        const result = await db.update({ ...req.params, rules: req.body });
-        return result;
+        return await db.update({ ...req.params, rules: req.body });
     } catch (error) {
         return error;
     }
@@ -62,8 +60,7 @@ exports.update = async (req) => {
 
 exports.delete = async (req) => {
     try {
-        const result = await db.delete(req.params);
-        return result;
+        return await db.delete(req.params);
     } catch (error) {
         return error;
     }

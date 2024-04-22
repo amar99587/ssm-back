@@ -17,7 +17,7 @@ exports.verifyAuth = async (req, res, next) => {
         const user = await cookies.read(req.cookies.cookie);
         user.time = Date.now();
         req.user = user.code && user;
-        if (process.env.in_dev) {
+        if (process.env.app_env.endsWith('development')) {
             console.log(`\n -----[ ${time()} ]-----[ ${req.url} ]-----[ ${req.user?.email} ]----- \n`);
         }
     } catch (error) {

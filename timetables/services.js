@@ -2,8 +2,7 @@ const db = require("../database/timetables");
 
 exports.create = async (req) => {
     try {
-        const result = await db.create(req.body);
-        return result;
+        return await db.create(req.body);
     } catch (error) {
         return error;
     }
@@ -11,8 +10,7 @@ exports.create = async (req) => {
 
 exports.delete = async (uid) => {
     try {
-        const result = await db.delete(uid);
-        return result;
+        return await db.delete(uid);
     } catch (error) {
         return error;
     }

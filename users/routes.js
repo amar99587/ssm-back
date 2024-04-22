@@ -36,7 +36,8 @@ app.get("/enter", async (req, res) => {
 });
 
 app.get("/logout", auth.require, async (req, res) => {
-    res.cookie("cookie", "", { defaultValue: cookies.options(0) });
+    const cookie = cookies.create('cookie', {}, 0);
+    res.setHeader('Set-Cookie', cookie);
     res.sendStatus(200);
 });
 

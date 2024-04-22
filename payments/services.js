@@ -26,16 +26,14 @@ exports.get = {
     // },
     one: async (payment) => {
         try {
-            const result = await db.get.one(payment);
-            return result;
+            return await db.get.one(payment);
         } catch (error) {
             return error;
         }
     },
     school: async (data) => {
         try {
-            const result = await db.get.school(data);
-            return result;
+            return await db.get.school(data);
         } catch (error) {
             return error;
         }
