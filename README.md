@@ -17,3 +17,4 @@ npm run dev
 - manage end point : NodeJs with ExpressJs.
 - manage data : PostgreSql.
 ```
+The project is ready to go but needs further modification
