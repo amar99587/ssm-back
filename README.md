@@ -2,19 +2,8 @@
 
 the API (back-end) url for SSM : [ssm-back.onrender.com](https://ssm-back.onrender.com)
 
-## Project setup
-```
-npm i
-```
-
-### Compiles and hot-reloads for development
-```
-npm run dev
-```
-
 ### Technology used in the project:
 ```
-- manage end point : NodeJs with ExpressJs.
-- manage data : PostgreSql.
+- Supports Arabic and French.
+- Supports night mode.
 ```
-The project is ready to go but needs further modification
