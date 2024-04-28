@@ -14,6 +14,6 @@ npm run dev
 
 ### Technology used in the project:
 ```
-manage end point : NodeJs with ExpressJs.
-manage data : PostgreSql.
+- manage end point : NodeJs with ExpressJs.
+- manage data : PostgreSql.
 ```
