@@ -2,9 +2,4 @@
 
 the API (back-end) url for SSM : [ssm-back.onrender.com](https://ssm-back.onrender.com)
 
-### Technology used in the project:
-```
-- Supports Arabic and French.
-- Supports night mode.
-```
 ⚠️ Project ready for testing but not for production ⚠️
