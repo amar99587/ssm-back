@@ -21,6 +21,10 @@ const { verifyAuth } = require("./middlewares/auth");
 
 app.use(verifyAuth);
 
+app.use("/api/payments/success", (req) => {
+  console.log(req.body);
+});
+
 app.use("/api/users/", require("./users/routes"));
 app.use("/api/schools/", require("./schools/routes"));
 app.use("/api/link/", require("./link/routes"));
