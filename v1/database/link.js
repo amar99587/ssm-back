@@ -1,4 +1,4 @@
-const db = require("./main");
+const db = require("../../database");
 const { handleDbError } = require("../utilities/validator");
 
 exports.new = async ({ user, school, rules, type, status }) => {
@@ -47,7 +47,7 @@ exports.update = async ({ user, school, rules, type, status }) => {
     }
 
     query += " WHERE user_code = $1 AND school_code = $2 RETURNING *;"
-    console.log(query, data);
+    // console.log(query, data);
     const result = await db.query(query, data);
     return result.rows[0];
   } catch (error) {
@@ -60,7 +60,7 @@ exports.delete = async ({ user, school }) => {
     user = user.toLowerCase();
     school = school.toLowerCase();
     const result = await db.query("DELETE FROM users_schools WHERE user_code = $1 AND school_code = $2;", [user, school]);
-    console.log(result);
+    // console.log(result);
     return result.rows;
   } catch (error) {
     return handleDbError(error);

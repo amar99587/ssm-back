@@ -1,4 +1,4 @@
-const db = require("./main");
+const db = require("../../database");
 const { handleDbError } = require("../utilities/validator");
 
 exports.create = async ({name, email}) => {
@@ -21,7 +21,7 @@ exports.get = {
                 LEFT JOIN schools s ON us.school_code = s.code
                 WHERE us.user_code = $1 AND school_code = $2;
             `, [ user, school ]);
-            console.log(result);
+            // console.log(result);
             return {
                 haveAccess: result.rows.length,
                 school: result.rows[0]
@@ -35,13 +35,14 @@ exports.get = {
             code = code.toLowerCase();
             const result = await db.query(`
                 SELECT 
-                    s.code, s.name, 
+                    s.code, s.name, s.license_end,
                     us.*
                 FROM users_schools us
                 LEFT JOIN schools s ON us.school_code = s.code
                 WHERE us.user_code = $1 AND (us.status = 'active' OR (us.status = 'inactive' AND us.rules = '{}' ))
-                ORDER BY s.created_at DESC;
+                ORDER BY us.created_at DESC;
             `, [ code ]);
+            // console.log(result.rows[0]);
             return result.rows;
         } catch (error) {
             return handleDbError(error);
@@ -62,6 +63,27 @@ exports.get = {
             `, [ code ]);
             return result.rows;
         } catch (error) {
+            return handleDbError(error);
+        };
+    }
+};
+
+exports.update = {
+    subscription: async (school, duration) => {
+        try {
+            const result = await db.query(`
+                UPDATE schools
+                SET license_end = CASE 
+                    WHEN license_end < CURRENT_DATE THEN CURRENT_DATE + INTERVAL '${duration} months'
+                    ELSE license_end + INTERVAL '${duration} months'
+                END
+                where code = $1;`, 
+                [ school ]
+            );
+            // console.log(result);
+            return result;
+        } catch (error) {
+            console.log(error);
             return handleDbError(error);
         };
     }

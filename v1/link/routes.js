@@ -36,6 +36,7 @@ app.post("/:user/:school", auth.require, async (req, res) => {
 
 app.delete("/:user/:school", auth.require, async (req, res) => {
     try {
+        // console.log("fire here");
         const result = await link.delete(req);
         // console.log(result);
         res.status(200).send(result);

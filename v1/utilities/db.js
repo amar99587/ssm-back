@@ -7,6 +7,7 @@ exports.search = async ({ select = "*", table, where = {}, exact = [], toText = 
     let syntax = `SELECT ${select} FROM ${table} WHERE `;
     let values = [];
     const whereToArray = Object.keys(where);
+    console.log(where, whereToArray);
     for (const key of whereToArray) {
 
         let nameKey = key;
@@ -36,7 +37,7 @@ exports.search = async ({ select = "*", table, where = {}, exact = [], toText = 
     }
     syntax += ` ${more || ''};`;
 
-    // console.log({ syntax, values });
+    console.log({ syntax, values });
     try {
         return db ? await db.query(syntax, values) : { syntax, values };
     } catch (error) {
