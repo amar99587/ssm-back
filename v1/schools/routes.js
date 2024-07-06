@@ -31,6 +31,16 @@ app.get("/get/:school", auth.require, async (req, res) => {
     }
 });
 
+app.post("/update", auth.require, async (req, res) => {
+    try {
+        const result = await school.update(req.body);
+        // console.log(result);
+        res.status(200).send(result);
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 app.get("/get/all/users/:school", auth.require, async (req, res) => {
     try {
         const result = await school.get.school_users(req.params.school);

@@ -1,12 +1,12 @@
 const { Router } = require("express");
-const pay = require("./services");
+const subscriptions = require("./services");
 const auth = require("../middlewares/auth");
 
 const app = Router();
 
 app.post("/create", auth.require, async (req, res) => {
   try {
-    const result = await pay.create(req);
+    const result = await subscriptions.create(req);
     res.status(200).send(result);
   } catch (error) {
     console.log(error);
@@ -15,13 +15,17 @@ app.post("/create", auth.require, async (req, res) => {
 
 app.post("/webhook", async (req, res) => {
   try {
-    const result = await pay.webhook(req);
     console.log({
       type: req.body.type,
       webhook: req.body.id, 
-      checkout: req.body.data.id
+      checkout: req.body.data.id,
+      customer: req.body.data.customer_id,
     });
-    res.status(200);
+    if (req.body.type == 'checkout.paid') {
+      var result = await subscriptions.webhook(req);
+      console.log(result);
+    }
+    res.status(200).send(result);
   } catch (error) {
     console.log(error);
   }
@@ -29,12 +33,12 @@ app.post("/webhook", async (req, res) => {
 
 app.get("/check/:id", async (req, res) => {
   try {
-    const result = await pay.check(req.params.id);
-    // console.log(result);
+    const result = await subscriptions.check(req.params.id);
+    console.log(result);
     res.status(200).send(result);
   } catch (error) {
     console.log(error);
   }
 });
 
-module.exports = app; 
+module.exports = app;

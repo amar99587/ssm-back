@@ -4,7 +4,11 @@ const { toDate } = require("../utilities/date");
 
 exports.create = async (req) => {
     try {
-        const school = await db.create(req.body);
+        const school = await db.create({
+            email: req.user.email, 
+            name: req.body.name,
+            license_end: toDate(Date.now() + (1000 * 60 * 60 * 24 * 30), 'timestamp')
+        });
         const link = await dbLink.new({
             user: req.user.code,
             school: school.code,
@@ -14,6 +18,22 @@ exports.create = async (req) => {
         });
         return link;
     } catch (error) {
+        return error;
+    }
+}
+
+exports.update = async data => {
+    console.log(data);
+    try {
+        let result;
+        if (data.school.length == 11 && data.name.length >= 1) {
+            result = await db.update(data);
+        } else {
+            result = { message: `school name is ${data.name.length < 1 ? 'too short' : 'requird'}, check the data`, data };
+        }
+        return result;
+    } catch (error) {
+        console.log(error);
         return error;
     }
 };

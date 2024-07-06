@@ -1,9 +1,24 @@
 const db = require("../../database");
 const { handleDbError } = require("../utilities/validator");
 
-exports.create = async ({name, email}) => {
+exports.create = async ({ name, email, license_end }) => {
+    console.log({ name, email, license_end });
     try {
-        const result = await db.query("INSERT INTO schools (name, email) VALUES ( $1, $2 ) RETURNING code;", [ name, email ]);
+        const result = await db.query(
+            `INSERT INTO schools (name, email, license_end) VALUES ( ${ license_end ? '$1, $2, $3' : '$1, $2' } ) RETURNING code;`, 
+            [ name, email, license_end ]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.log(error);
+        return handleDbError(error);
+    };
+};
+
+exports.update = async ({ school, name }) => {
+    try {
+        const result = await db.query("UPDATE schools SET name = $2 WHERE code = $1;", [ school, name ]);
+        // console.log(result);
         return result.rows[0];
     } catch (error) {
         return handleDbError(error);
@@ -20,7 +35,7 @@ exports.get = {
                 FROM users_schools us
                 LEFT JOIN schools s ON us.school_code = s.code
                 WHERE us.user_code = $1 AND school_code = $2;
-            `, [ user, school ]);
+            `, [user, school]);
             // console.log(result);
             return {
                 haveAccess: result.rows.length,
@@ -41,7 +56,7 @@ exports.get = {
                 LEFT JOIN schools s ON us.school_code = s.code
                 WHERE us.user_code = $1 AND (us.status = 'active' OR (us.status = 'inactive' AND us.rules = '{}' ))
                 ORDER BY us.created_at DESC;
-            `, [ code ]);
+            `, [code]);
             // console.log(result.rows[0]);
             return result.rows;
         } catch (error) {
@@ -60,30 +75,9 @@ exports.get = {
                 LEFT JOIN users u ON us.user_code = u.code
                 WHERE us.school_code = $1 AND (us.status = 'active' OR (us.status = 'inactive' AND us.rules <> '{}' ))
                 ORDER BY us.created_at DESC;
-            `, [ code ]);
+            `, [code]);
             return result.rows;
         } catch (error) {
-            return handleDbError(error);
-        };
-    }
-};
-
-exports.update = {
-    subscription: async (school, duration) => {
-        try {
-            const result = await db.query(`
-                UPDATE schools
-                SET license_end = CASE 
-                    WHEN license_end < CURRENT_DATE THEN CURRENT_DATE + INTERVAL '${duration} months'
-                    ELSE license_end + INTERVAL '${duration} months'
-                END
-                where code = $1;`, 
-                [ school ]
-            );
-            // console.log(result);
-            return result;
-        } catch (error) {
-            console.log(error);
             return handleDbError(error);
         };
     }

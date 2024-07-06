@@ -50,8 +50,10 @@ exports.create = async ({ school, course }) => {
 exports.search = async (lesson, {offset, limit}) => {
     try {
         const result = await search({table: "lessons", where: lesson, exact: ["course"], toDate: ["created_at"], offset: offset, limit: limit}, db);
+        console.log(result);
         return result.rows;
     } catch (error) {
+        console.log(error);
         return handleDbError(error);
     };
 };

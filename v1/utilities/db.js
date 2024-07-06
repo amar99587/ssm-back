@@ -36,8 +36,7 @@ exports.search = async ({ select = "*", table, where = {}, exact = [], toText = 
         syntax += ` LIMIT $${values.length}`;
     }
     syntax += ` ${more || ''};`;
-
-    console.log({ syntax, values });
+    console.log(syntax, values);
     try {
         return db ? await db.query(syntax, values) : { syntax, values };
     } catch (error) {

@@ -26,7 +26,7 @@ app.post("/search", auth.require, async (req, res) => {
 
 app.post("/get/school", auth.require, async (req, res) => {
     try {
-        const result = await payment.get.school(req.body);
+        const result = await payment.get.school(req);
         res.status(200).send(result);
     } catch (error) {
         console.log(error);

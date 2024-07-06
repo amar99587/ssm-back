@@ -25,7 +25,7 @@ exports.delete = async (uid) => {
 exports.get = async (school) => {
     try {
       const result = await db.query(`
-      SELECT t.uid as timetable_uid, t.day, t.week, t.date, t.start_at, t.end_at, c.uid, c.name, c.teacher, c.price
+      SELECT t.uid as timetable_uid, t.day, t.date, t.start_at, t.end_at, c.uid, c.name, c.teacher, c.price
       FROM timetables t
       INNER JOIN courses c ON t.course_uid = c.uid WHERE school_code = $1;`, [ school ]);
       return result.rows;

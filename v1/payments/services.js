@@ -17,13 +17,6 @@ exports.search = async (req) => {
 };
 
 exports.get = {
-    // all: async (column, value) => {
-    //     try {
-    //         return await db.get.all(column, value);
-    //     } catch (error) {
-    //         return error;
-    //     }
-    // },
     one: async (payment) => {
         try {
             return await db.get.one(payment);
@@ -31,10 +24,12 @@ exports.get = {
             return error;
         }
     },
-    school: async (data) => {
+    school: async (req) => {
         try {
-            return await db.get.school(data);
+            console.log(req.query);
+            return await db.finance(req.body, req.query);
         } catch (error) {
+            console.log(error);
             return error;
         }
     },

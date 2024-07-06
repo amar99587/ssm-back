@@ -36,6 +36,6 @@ app.use("/students", require("./students/routes"));
 app.use("/payments", require("./payments/routes"));
 app.use("/lessons", require("./lessons/routes"));
 app.use("/timetables", require("./timetables/routes"));
-app.use("/pay", require("./pay/routes"));
+app.use("/subscriptions", require("./subscriptions/routes"));
 
 module.exports = app;

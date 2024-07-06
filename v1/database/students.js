@@ -22,7 +22,7 @@ exports.update = async (student) => {
 
 exports.search = async (student, {offset, limit}) => {
     try {
-        const result = await search({table: "students", where: student, exact: ["school"], offset: offset, limit: limit}, db);
+        const result = await search({table: "students", where: student, exact: ["school"], offset, limit }, db);
         // console.log(result.rows.length);
         return result.rows;
     } catch (error) {

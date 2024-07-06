@@ -104,75 +104,13 @@ CREATE TABLE lessons (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-
-
-INSERT INTO students (name, birthday, email, phone, school)
-SELECT
-  arabic_names.name,
-  FLOOR(RANDOM() * (2006 - 2000) + 2000)::TEXT || '-' || LPAD(FLOOR(RANDOM() * 12 + 1)::TEXT, 2, '0') || '-' || LPAD(FLOOR(RANDOM() * 28 + 1)::TEXT, 2, '0'),
-  CASE
-    WHEN FLOOR(RANDOM() * 2) = 1 THEN arabic_names.email
-    ELSE NULL
-  END,
-  CASE
-    WHEN FLOOR(RANDOM() * 2) = 1 THEN
-      CASE
-        WHEN arabic_names.phone_prefix = '05' THEN '05' || LPAD(FLOOR(RANDOM() * 1000000000)::TEXT, 9, '0')
-        WHEN arabic_names.phone_prefix = '06' THEN '06' || LPAD(FLOOR(RANDOM() * 1000000000)::TEXT, 9, '0')
-        WHEN arabic_names.phone_prefix = '07' THEN '07' || LPAD(FLOOR(RANDOM() * 1000000000)::TEXT, 9, '0')
-      END
-    ELSE NULL
-  END,
-  '360-c6a-20b' AS school
-FROM
-  (SELECT
-    UNNEST(ARRAY[
-  'Ahmed', 'Mohammed', 'Fatima', 'Amina', 'Youssef',
-  'Noor', 'Layla', 'Omar', 'Ali', 'Sara',
-  'Hassan', 'Aisha', 'Khaled', 'Lina', 'Tariq',
-  'Noura', 'Ziad', 'Yara', 'Karim', 'Rana',
-  'Bilal', 'Mona', 'Samir', 'Rima', 'Nabil',
-  'Leila', 'Farid', 'Rania', 'Adel', 'Dina',
-  'Omar', 'Amina', 'Rami', 'Samar', 'Walid',
-  'Nadia', 'Mazen', 'Maya', 'Zakaria', 'Hoda',
-  'Khalid', 'Nour', 'Hussein', 'Jasmine', 'Sami',
-  'Hala', 'Tamer', 'Yasmin', 'Mahmoud', 'Rasha',
-  'Tarek', 'Rana', 'Mustafa', 'Laila', 'Wael',
-  'Amal', 'Ali', 'Lina', 'Karim', 'Layla',
-  'Adnan', 'Salma', 'Riad', 'Maha', 'Hamza',
-  'Dina', 'Kamal', 'Soraya', 'Raed', 'Mai',
-  'Fadi', 'Lina', 'Imad', 'Sawsan', 'Fares',
-  'Samar', 'Nader', 'Reem', 'Wael', 'Dalia',
-  'Zakariya', 'Inas', 'Rafik', 'Nina', 'Maher',
-  'Leila', 'Rami', 'Nadia', 'Yassin', 'Rima',
-  'Ahmad', 'Rasha', 'Khaled', 'Noura', 'Amr'
-]
-) AS name,
-    LOWER(UNNEST(ARRAY[
-  'Ahmed', 'Mohammed', 'Fatima', 'Amina', 'Youssef',
-  'Noor', 'Layla', 'Omar', 'Ali', 'Sara',
-  'Hassan', 'Aisha', 'Khaled', 'Lina', 'Tariq',
-  'Noura', 'Ziad', 'Yara', 'Karim', 'Rana',
-  'Bilal', 'Mona', 'Samir', 'Rima', 'Nabil',
-  'Leila', 'Farid', 'Rania', 'Adel', 'Dina',
-  'Omar', 'Amina', 'Rami', 'Samar', 'Walid',
-  'Nadia', 'Mazen', 'Maya', 'Zakaria', 'Hoda',
-  'Khalid', 'Nour', 'Hussein', 'Jasmine', 'Sami',
-  'Hala', 'Tamer', 'Yasmin', 'Mahmoud', 'Rasha',
-  'Tarek', 'Rana', 'Mustafa', 'Laila', 'Wael',
-  'Amal', 'Ali', 'Lina', 'Karim', 'Layla',
-  'Adnan', 'Salma', 'Riad', 'Maha', 'Hamza',
-  'Dina', 'Kamal', 'Soraya', 'Raed', 'Mai',
-  'Fadi', 'Lina', 'Imad', 'Sawsan', 'Fares',
-  'Samar', 'Nader', 'Reem', 'Wael', 'Dalia',
-  'Zakariya', 'Inas', 'Rafik', 'Nina', 'Maher',
-  'Leila', 'Rami', 'Nadia', 'Yassin', 'Rima',
-  'Ahmad', 'Rasha', 'Khaled', 'Noura', 'Amr'
-]
-)) || '@email.com' AS email,
-    UNNEST(ARRAY['05', '06', '07']) AS phone_prefix
-  ) AS arabic_names
-LIMIT 100;
+CREATE TABLE subscriptions (
+  checkout VARCHAR PRIMARY KEY,
+  school VARCHAR(11) REFERENCES schools(code),
+  amount DECIMAL,
+  duration INT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
 
 -- open psql from cmd
 -- 1 - cd C:\Program Files\PostgreSQL\15\bin
