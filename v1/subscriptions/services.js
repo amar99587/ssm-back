@@ -17,7 +17,7 @@ exports.create = async (req) => {
       body: JSON.stringify({
         "currency": "dzd",
         "amount": (body.subscription.price * body.subscription.duration),
-        "success_url": `${process.env.cors_origin}/school/${body.school}`,
+        "success_url": `${process.env.cors_origin}/${body.school ? `school/${body.school}` : 'account'}`,
         "failure_url": `${process.env.cors_origin}/account?pay=canceled`,
         "webhook_endpoint": `${process.env.app_origin}/v1/subscriptions/webhook`,
         "metadata": {
