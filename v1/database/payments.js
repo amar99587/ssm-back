@@ -63,7 +63,7 @@ exports.finance = async ({ school, from, to, user, course, teacher }, { offset =
 
         const result = {
             statistic: statistic?.rows[0],
-            rows: list.rows
+            rows: list.rows.length
         };
         console.log(result);
         return result;
